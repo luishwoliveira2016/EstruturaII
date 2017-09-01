@@ -23,6 +23,16 @@ node * search (node * r, int key){
 	return search (r->right, key); 	
 }
 
+node * inorder(node *r){
+	if(r !=NULL){
+		inorder(r->left);
+
+		printf("%d"r.key);
+
+		inorder(r->right);
+	}
+}
+
 
 //mostra todas as chaves da árvore
 
