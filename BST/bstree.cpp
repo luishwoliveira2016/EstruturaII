@@ -94,11 +94,13 @@ int main ( void ){
 	
 	node * root = NULL;
 
-	int opc;
+	int opc , x = 5 , i = 0;
 
 	
-	while(scanf("%d", &n)){
+	while(i<x){
+		scanf("%d", &n);
 		root = insert(root, n);
+		i++;
 	}
 
 	printf("1-travessia preorder\n2-travessia posrder\n3-travessiainorder\n");
