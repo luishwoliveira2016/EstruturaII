@@ -10,8 +10,6 @@ struct node{
 };
 
 
-
-
 //busca por uma chave k na árvore com raiz r
 //caso a chave não estiver na árvore retorna NULL
 
@@ -96,16 +94,25 @@ int main ( void ){
 	
 	node * root = NULL;
 
+	int opc;
+
 	
 	while(scanf("%d", &n)){
 		root = insert(root, n);
 	}
 
-	if(search(root, 7)) printf("achouUU!");
-	else printf("nao achooou :(");
-	
-	
-	
+	printf("1-travessia preorder\n2-travessia posrder\n3-travessiainorder\n");
+	scanf("%d",&opc);
+
+	switch(opc){
+		case 1:
+			preorder(root);
+		case 2:
+			posrder(root);
+		case 3:
+			inorder(root);
+
+	}
 
 	return 0;
 }
