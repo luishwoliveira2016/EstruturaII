@@ -26,10 +26,25 @@ node * search (node * r, int key){
 node * inorder(node *r){
 	if(r !=NULL){
 		inorder(r->left);
-
 		printf("%d",r->key);
-
 		inorder(r->right);
+	}
+}
+
+node * preorder(node *r){
+	if(r !=NULL){
+		
+		printf("%d",r->key);
+		inorder(r->left);
+		inorder(r->right);
+	}
+}
+
+node * posrder(node *r){
+	if(r !=NULL){
+		inorder(r->left);
+		inorder(r->right);
+		printf("%d",r->key);
 	}
 }
 
