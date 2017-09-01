@@ -1,4 +1,4 @@
-/*trabalho arvore de busca binaria*//
+/*trabalho arvore de busca binaria*/
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -27,7 +27,7 @@ node * inorder(node *r){
 	if(r !=NULL){
 		inorder(r->left);
 
-		printf("%d"r.key);
+		printf("%d",r->key);
 
 		inorder(r->right);
 	}
