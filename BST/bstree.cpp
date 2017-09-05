@@ -33,15 +33,15 @@ node * preorder(node *r){
 	if(r !=NULL){
 		
 		printf("%d",r->key);
-		inorder(r->left);
-		inorder(r->right);
+		preorder(r->left);
+		preorder(r->right);
 	}
 }
 
 node * posrder(node *r){
 	if(r !=NULL){
-		inorder(r->left);
-		inorder(r->right);
+		posrder(r->left);
+		posrder(r->right);
 		printf("%d",r->key);
 	}
 }
@@ -49,7 +49,7 @@ node * posrder(node *r){
 
 //mostra todas as chaves da árvore
 
-void * print (node * r);
+void * print (node * r){}
 
 //insere um nodo com chave key na árvore com raiz r
 //retorna um ponteiro para a raiz da árvore
@@ -84,7 +84,12 @@ node * insert (node * r, int key){
 
 //remove o nodo da árvore com raiz r que possui chave igual a key
 //(lembra que tem que dar free no nodo)
-void remove (node * r, int key);
+void remove (node * r, int key){
+
+	
+
+
+}
 
 
 
@@ -94,7 +99,10 @@ int main ( void ){
 	
 	node * root = NULL;
 
-	int opc , x = 5 , i = 0;
+	int opc , x = 0, i = 0;
+
+	printf("quantidade de elementos a ser inserido\n");
+	scanf("%d",&x);
 
 	
 	while(i<x){
@@ -103,7 +111,7 @@ int main ( void ){
 		i++;
 	}
 
-	printf("1-travessia preorder\n2-travessia posrder\n3-travessiainorder\n");
+	printf("1-travessia preorder\n2-travessia posrder\n3-travessia inorder\n4-remover elemento\n");
 	scanf("%d",&opc);
 
 	switch(opc){
@@ -113,6 +121,10 @@ int main ( void ){
 			posrder(root);
 		case 3:
 			inorder(root);
+		case 4:
+			remove(root,0);
+		case 5 : 
+			print(root);
 
 	}
 
