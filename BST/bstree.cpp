@@ -7,6 +7,11 @@
 struct node{
 	int key;  					//chave de identificação do nodo	
 	node * left, * right;		//ponteiros para os filhos
+	node * pai;
+};
+
+struct tree{
+	node *raiz;
 };
 
 
@@ -54,11 +59,12 @@ void * print (node * r){}
 //insere um nodo com chave key na árvore com raiz r
 //retorna um ponteiro para a raiz da árvore
 
-node * insert (node * r, int key){
+node * insert (node * r,node * q->key){
 	node * n = (node *)malloc(sizeof(node));		//cria um novo nodo
 	n->left = n->right = NULL;
 	n->key = key;
-			
+	n->pai = NULL;
+
 	if(!r) return n;			// se a arvore estiver vazia
 
 	node * it = r;	
@@ -76,17 +82,27 @@ node * insert (node * r, int key){
 				break;			
 			}
 			it = it->right;
-		}		
+		}
+		r->pai = it;		
 	}
 
 	return r;
 }
 
+void transplante(node * t , node * u , node * v){
+	if(u->pai == NULL){
+		//t->raiz = v;
+	}
+}
+
 //remove o nodo da árvore com raiz r que possui chave igual a key
 //(lembra que tem que dar free no nodo)
 void remove (node * r, int key){
-
+	if(key->esquerda == NULL){
+		transplante(r,key,key->direita);
+	}
 	
+		
 
 
 }
@@ -95,7 +111,7 @@ void remove (node * r, int key){
 
 int main ( void ){
 
-	int n;
+	int n , key;
 	
 	node * root = NULL;
 
@@ -111,21 +127,25 @@ int main ( void ){
 		i++;
 	}
 
-	printf("1-travessia preorder\n2-travessia posrder\n3-travessia inorder\n4-remover elemento\n");
+	printf("1-travessia preorder\n2-travessia posrder\n3-travessia inorder\n4-Remover elemento\n5-Mostrar Arvore\n6-Buscar Elemento\n0-Sair\n");
 	scanf("%d",&opc);
 
-	switch(opc){
-		case 1:
-			preorder(root);
-		case 2:
-			posrder(root);
-		case 3:
-			inorder(root);
-		case 4:
-			remove(root,0);
-		case 5 : 
-			print(root);
+	while(opc !=0){
+		switch(opc){
+			case 1:
+				preorder(root);
+			case 2:
+				posrder(root);
+			case 3:
+				inorder(root);
+			case 4:
+				printf("elemento a ser deletado :");
+				scanf("%d",&key);
+				remove(root,key);
+			case 5 : 
+				print(root);
 
+		}
 	}
 
 	return 0;
