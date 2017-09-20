@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 
 
 struct node{
@@ -19,7 +20,7 @@ struct tree{
 //caso a chave não estiver na árvore retorna NULL
 
 node * search (node * r, int key){
-	if(!r || r->key == key ) return r;				//n encontrou a chave
+	if(!r || r->key == key )  return r;				//n encontrou a chave
 
 	if(key <= r->key) return search (r->left, key);
 	
