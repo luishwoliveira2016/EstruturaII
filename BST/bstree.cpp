@@ -26,16 +26,16 @@ node * search (node * r, int key){
 	return search (r->right, key); 	
 }
 
-node * inorder(node *r){
-	if(r !=NULL){
+void inorder(node *r){
+	if(r){
 		inorder(r->left);
 		printf("%d",r->key);
 		inorder(r->right);
 	}
 }
 
-node * preorder(node *r){
-	if(r !=NULL){
+void preorder(node *r){
+	if(r){
 		
 		printf("%d",r->key);
 		preorder(r->left);
@@ -43,10 +43,10 @@ node * preorder(node *r){
 	}
 }
 
-node * posrder(node *r){
-	if(r !=NULL){
-		posrder(r->left);
-		posrder(r->right);
+void posorder(node *r){
+	if(r){
+		posorder(r->left);
+		posorder(r->right);
 		printf("%d",r->key);
 	}
 }
@@ -59,12 +59,11 @@ void * print (node * r){}
 //insere um nodo com chave key na árvore com raiz r
 //retorna um ponteiro para a raiz da árvore
 
-node * insert (node * r,node * q->key){
+node * insert (node * r,int key){
 	node * n = (node *)malloc(sizeof(node));		//cria um novo nodo
-	n->left = n->right = NULL;
+	n->left = n->right = n->pai=NULL;
 	n->key = key;
-	n->pai = NULL;
-
+	
 	if(!r) return n;			// se a arvore estiver vazia
 
 	node * it = r;	
@@ -83,31 +82,38 @@ node * insert (node * r,node * q->key){
 			}
 			it = it->right;
 		}
-		r->pai = it;		
+				
 	}
 
 	return r;
+	r->pai = it;
 }
 
-void transplante(node * t , node * u , node * v){
-	if(u->pai == NULL){
-		//t->raiz = v;
+node *tree_min(node *r){
+	return (!r->left)? r: tree_min(r->left);
+}
+
+void transplante(tree * t , node * u , node * v){
+	if(!u->pai){
+		t->raiz = v;
+	}else if(u=u->pai->left){
+		u->pai->left = v;
+
+	}else{
+		u->pai->right = v;
+	}
+	if(!v){
+		v->pai=u->pai;
 	}
 }
 
 //remove o nodo da árvore com raiz r que possui chave igual a key
 //(lembra que tem que dar free no nodo)
 void remove (node * r, int key){
-	if(key->esquerda == NULL){
-		transplante(r,key,key->direita);
-	}
-	
-		
-
-
+	//if(key->esquerda == NULL){
+		//transplante(r,key,key->direita);
+	//}
 }
-
-
 
 int main ( void ){
 
@@ -127,24 +133,26 @@ int main ( void ){
 		i++;
 	}
 
-	printf("1-travessia preorder\n2-travessia posrder\n3-travessia inorder\n4-Remover elemento\n5-Mostrar Arvore\n6-Buscar Elemento\n0-Sair\n");
-	scanf("%d",&opc);
+	while(opc != 0 ){
 
-	while(opc !=0){
-		switch(opc){
-			case 1:
-				preorder(root);
-			case 2:
-				posrder(root);
-			case 3:
-				inorder(root);
-			case 4:
-				printf("elemento a ser deletado :");
-				scanf("%d",&key);
-				remove(root,key);
-			case 5 : 
-				print(root);
+		printf("\n1-travessia preorder\n2-travessia posrder\n3-travessia inorder\n4-Remover elemento\n5-Mostrar Arvore\n6-Buscar Elemento\n0-Sair\n");
+		scanf("%d",&opc);
 
+	
+		if(opc == 1) preorder(root);
+		else if(opc==2) posorder(root);
+		else if(opc==3) inorder(root);
+		else if(opc==4) {
+			printf("elemento a deletar : ");
+			scanf("%d",&key);
+			remove(root,key);
+
+		}
+		else if(opc==5) print(root);
+		else if(opc==6) {
+			printf("elemento  a buscar:\n");
+			scanf("%d",&key);
+			search(root,key);
 		}
 	}
 
