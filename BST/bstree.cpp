@@ -11,7 +11,7 @@ struct node{
 	node * pai;
 };
 
-struct tree{
+struct tree{    //esrtrutura da arvore
 	node *raiz;
 };
 
@@ -19,15 +19,15 @@ struct tree{
 //busca por uma chave k na árvore com raiz r
 //caso a chave não estiver na árvore retorna NULL
 
-node * search (node * r, int key){
-	if(!r || r->key == key )  return r;				//n encontrou a chave
+node * search (node * r, int key){ // encontra o nodo com a key informada
+	if(!r || r->key == key )  return r;				
 
 	if(key <= r->key) return search (r->left, key);
 	
 	return search (r->right, key); 	
 }
 
-void inorder(node *r){
+void inorder(node *r){ // mostra nodos da arvore  metodo inorder
 	if(r){
 		inorder(r->left);
 		printf("%d",r->key);
@@ -35,7 +35,7 @@ void inorder(node *r){
 	}
 }
 
-void preorder(node *r){
+void preorder(node *r){ // mostra nodos da arvore  metodo preorder
 	if(r){
 		
 		printf("%d",r->key);
@@ -44,17 +44,13 @@ void preorder(node *r){
 	}
 }
 
-void posorder(node *r){
+void posorder(node *r){ // mostra nodos da arvore  metodo posorder
 	if(r){
 		posorder(r->left);
 		posorder(r->right);
 		printf("%d",r->key);
 	}
 }
-
-
-//mostra todas as chaves da árvore
-
 
 //insere um nodo com chave key na árvore com raiz r
 //retorna um ponteiro para a raiz da árvore
@@ -85,76 +81,65 @@ node * insert (node * r,int key){
 				
 	}
 
+	n->pai = it;
 	return r;
-	r->pai = it;
+	
 }
 
-node * tree_min(node *r){
-	return (!r->left)? r: tree_min(r->left);
-}
-
-void transplante(tree * t , node * u , node * v){
-	if(!u->pai){
-		t->raiz = v;
-	}else if(u=u->pai->left){
-		u->pai->left = v;
-
-	}else{
-		u->pai->right = v;
+node * remove(node *r,int v){
+	
+	if(r == NULL){   
+		return NULL;
 	}
-	if(!v){
-		v->pai=u->pai;
+	else if (r->key > v){
+		r->left = remove(r->right ,v);
 	}
-}
-
-//remove o nodo da árvore com raiz r que possui chave igual a key
-//(lembra que tem que dar free no nodo)
-
-void remove (tree *T, node *z){
-		node * y;
-	if(!z->left)
-		transplante(T, z, z->right);
-	else if(!z->right)
-		transplante(T, z, z->left);
+	else if(r->key < v){
+		r->right = remove(r->right , v);
+	}
 	else{
-		y = tree_min(z->right);
-		if(y->pai != z){
-			transplante(T, y, y->right);
-			y->right = z->right;
-			y->right->pai = y;
+		if(!r->left && !r->right){ // nodo sem filhos
+			free(r);
+			r = NULL;
 		}
-		transplante(T, z, y);
-		y->left = z->left;
-		y->left->pai = y;
-	}	
-}
+	
+		else if(!r->left){ // nodo com filho a direita
+			node *t = r;
+			r= r->right;
+			free(t); 
+		}
 
-node * tree_sucessor(node * x){
-	if(x->right) return tree_min(x->right);
+		else if(!r->right){ // nodo com filho a esquerda
+			node *t = r;
+			r= r->left;
+			free(t); 
+		}
 
-	node * y = x->pai;
-
-	while(y && x == y->right){
-		x = y;
-		y = y->pai;
+		else{ // nodo com dois filhos
+			node * f= r->left;
+			while (f->right != NULL){
+				f = f->right;
+			}
+		
+			r->key = f->key; // faz as trocas
+			f->key = v;
+			r->left = remove(r->left , v);
+		}
 	}
-	return y;
+	
+	return r;
 }
-
 
 int main ( void ){
-
-	int n , key , opc;
-
+	
+	int key , opc;
 	tree t;
-
 	node * aux;
-
 	t.raiz = NULL;
 
 	
-	while (scanf("%d", &n)){
-		t.raiz= insert(t.raiz,n);
+	while (scanf("%d", &key)){
+		t.raiz= insert(t.raiz,key);
 	}
 
 	fflush(stdin);
@@ -162,36 +147,44 @@ int main ( void ){
 
 	while(opc != 0 ){
 
-		printf("\n1-travessia preorder\n2-travessia posrder\n3-travessia inorder\n4-Remover elemento\n5-Buscar Elemento\n0-Sair\n");
+		printf("\n1-Travessia Preorder\n2-Travessia Posrder\n3-Travessia Inorder\n4-Remover Elemento\n5-Buscar Elemento\n0-Sair\n");
 		scanf("%d",&opc);
 
-	
-		if(opc == 1) preorder(t.raiz);
-		else if(opc==2) posorder(t.raiz);
-		else if(opc==3) inorder(t.raiz);
-		else if(opc==4) {
-			printf("elemento a deletar : ");
-			scanf("%d",&n);
-			aux  = search(t.raiz , n);
-			printf("chave a ser deletada : %d",aux->key);
-			if(aux){
-				remove(&t,aux);
-				free(aux);
 
-			}else printf("a chave não existe\n");
-			
+		switch(opc){
+			case 0 :
+				return 0;
+			case 1:
+				preorder(t.raiz);
+				break;
+			case 2:
+				posorder(t.raiz);
+				break;
+			case 3:
+				inorder(t.raiz);
+				break;
+			case 4 :
+				printf("elemento a deletar : ");
+				scanf("%d",&key);
 
-		}
-		else if(opc==5) {
-			printf("elemento  a buscar:\n");
-			scanf("%d",&key);
-			
-			aux = search(t.raiz,key);
+				aux  = search(t.raiz , key);
+				if(!aux) printf("chave não existe\n"); 
 
-			if(!aux) printf("a chave não existe\n");
-
-			else if(aux->key == key) printf("encontrou %d !!\n",aux->key );
-
+				else {
+					printf("chave a ser deletada : %d",key);
+					aux = remove(t.raiz,key);
+				}
+				break;
+			case 5:
+				printf("elemento  a buscar:\n");
+				scanf("%d",&key);
+				aux = search(t.raiz,key);
+				if(!aux) printf("a chave não existe\n");
+				else if(aux->key == key) printf("encontrou %d !!\n",aux->key );
+				break;
+			default:
+				printf("opcao invalida\n");
+				break;
 		}
 	}
 
